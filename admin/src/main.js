@@ -5,8 +5,10 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import axios from 'axios'
 
-// 配置axios
-// axios.defaults.baseURL = '/api'
+// 配置axios - 改为您的后端地址
+// 本地开发用 localhost:3001，线上用 Render 地址
+const isProduction = window.location.hostname !== 'localhost'
+axios.defaults.baseURL = isProduction ? 'https://tennis-app-ohjj.onrender.com' : 'http://localhost:3001'
 
 // 请求拦截器，添加token
 axios.interceptors.request.use(
@@ -29,7 +31,6 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response && error.response.status === 401) {
-      // token过期，清除token并跳转到登录页
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       router.push('/login')
