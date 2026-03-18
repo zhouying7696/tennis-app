@@ -1,0 +1,208 @@
+<!-- create.wxml -->
+<view class="container">
+  <!-- 状态栏 -->
+  <view class="status-bar">
+    <text class="status-time">{{ currentTime }}</text>
+    <view class="status-icons">
+      <text>📶</text>
+      <text>🔋</text>
+    </view>
+  </view>
+
+  <!-- 头部 -->
+  <view class="screen-header">
+    <button class="back-btn" bindtap="goBack">
+      <text>←</text>
+    </button>
+    <text class="screen-title">创建活动</text>
+  </view>
+
+  <!-- 表单滚动区域 -->
+  <scroll-view class="form-scroll" scroll-y>
+    <!-- 活动信息 -->
+    <view class="form-section">
+      <text class="form-section-title">活动信息</text>
+      <view class="form-row" bindtap="selectActivityType">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-green">🎾</view>
+          <view>
+            <text class="form-row-label">活动类型</text>
+            <text class="form-row-value {{ activityType ? 'filled' : '' }}">{{ activityType || '选择活动类型' }}</text>
+          </view>
+        </view>
+        <text class="chevron">›</text>
+      </view>
+      <view class="form-row">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-orange">📝</view>
+          <view style="flex: 1;">
+            <text class="form-row-label">活动标题</text>
+            <input placeholder="请输入活动标题" class="form-inline-input" bindinput="onTitleInput" value="{{ title }}" />
+          </view>
+        </view>
+      </view>
+      <view class="form-row" bindtap="selectDate">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-blue">📅</view>
+          <view>
+            <text class="form-row-label">活动日期</text>
+            <text class="form-row-value {{ date ? 'filled' : '' }}">{{ date || '选择日期' }}</text>
+          </view>
+        </view>
+        <text class="chevron">›</text>
+      </view>
+      <view class="form-row" bindtap="selectTime">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-purple">🕒</view>
+          <view>
+            <text class="form-row-label">活动时间</text>
+            <text class="form-row-value {{ startTime && endTime ? 'filled' : '' }}">{{ startTime && endTime ? `${startTime} - ${endTime}` : '选择时间' }}</text>
+          </view>
+        </view>
+        <text class="chevron">›</text>
+      </view>
+    </view>
+
+    <!-- 场地信息 -->
+    <view class="form-section">
+      <text class="form-section-title">场地信息</text>
+      <view class="form-row" bindtap="selectVenue">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-green">📍</view>
+          <view>
+            <text class="form-row-label">活动场地</text>
+            <text class="form-row-value {{ venue ? 'filled' : '' }}">{{ venue ? venue.name : '选择场地' }}</text>
+          </view>
+        </view>
+        <text class="chevron">›</text>
+      </view>
+      <view class="form-row" bindtap="selectCourtType">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-blue">🏟️</view>
+          <view>
+            <text class="form-row-label">场地类型</text>
+            <text class="form-row-value {{ courtType ? 'filled' : '' }}">{{ courtType || '选择场地类型' }}</text>
+          </view>
+        </view>
+        <text class="chevron">›</text>
+      </view>
+    </view>
+
+    <!-- 参与设置 -->
+    <view class="form-section">
+      <text class="form-section-title">参与设置</text>
+      <view class="form-row">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-orange">👥</view>
+          <view>
+            <text class="form-row-label">参与人数</text>
+          </view>
+        </view>
+        <view class="players-counter">
+          <button class="counter-btn" bindtap="decreasePlayers" disabled="{{ maxPlayers <= 2 }}">-</button>
+          <text class="counter-num">{{ maxPlayers }}</text>
+          <button class="counter-btn" bindtap="increasePlayers">+</button>
+        </view>
+      </view>
+      <view class="form-row" bindtap="selectLevel">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-red">⭐</view>
+          <view>
+            <text class="form-row-label">水平要求</text>
+            <text class="form-row-value {{ level ? 'filled' : '' }}">{{ level || '选择水平要求' }}</text>
+          </view>
+        </view>
+        <text class="chevron">›</text>
+      </view>
+    </view>
+
+    <!-- 费用设置 -->
+    <view class="form-section">
+      <text class="form-section-title">费用设置</text>
+      <view class="fee-row">
+        <view class="fee-left">
+          <view class="form-row-icon fri-green">💰</view>
+          <text class="fee-label">收取费用</text>
+        </view>
+        <view class="toggle {{ feeEnabled ? '' : 'off' }}" bindtap="toggleFee"></view>
+      </view>
+      <view class="fee-input-row" wx:if="{{ feeEnabled }}">
+        <view class="form-row-left">
+          <view class="form-row-icon fri-blue">💵</view>
+          <text class="form-row-label">费用金额</text>
+        </view>
+        <view class="fee-input-wrap">
+          <text class="fee-currency">¥</text>
+          <input type="number" class="fee-amount-input" bindinput="onFeeInput" value="{{ fee }}" />
+        </view>
+      </view>
+      <view class="fee-split-bar" wx:if="{{ feeEnabled }}">
+        <text class="fsb-formula">费用将由所有参与者平均分摊</text>
+        <text class="fsb-arrow">→</text>
+        <text class="fsb-result">¥{{ perPersonFee.toFixed(2) }}/人</text>
+      </view>
+    </view>
+
+    <!-- 活动描述 -->
+    <view class="form-section">
+      <text class="form-section-title">活动描述</text>
+      <view class="desc-edit-section">
+        <view class="desc-edit-header">
+          <text class="form-row-label">活动详情</text>
+          <text class="desc-count">{{ description.length }}/200</text>
+        </view>
+        <textarea placeholder="请输入活动详情，包括活动规则、注意事项等" class="desc-textarea" bindinput="onDescriptionInput" value="{{ description }}" maxlength="200"></textarea>
+        <view class="desc-quick-tags">
+          <text class="desc-qtag" bindtap="addQuickTag">友谊赛</text>
+          <text class="desc-qtag" bindtap="addQuickTag">训练</text>
+          <text class="desc-qtag" bindtap="addQuickTag">新手友好</text>
+          <text class="desc-qtag" bindtap="addQuickTag">提供球拍</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 活动规则 -->
+    <view class="form-section">
+      <text class="form-section-title">活动规则</text>
+      <view class="rules-templates">
+        <text class="rules-tpl-label">快速模板</text>
+        <view class="rules-tpl-chips">
+          <button class="rules-tpl-chip {{ selectedRuleTemplate === 'friendly' ? 'active' : '' }}" bindtap="selectRuleTemplate" data-template="friendly">友谊赛</button>
+          <button class="rules-tpl-chip {{ selectedRuleTemplate === 'training' ? 'active' : '' }}" bindtap="selectRuleTemplate" data-template="training">训练</button>
+          <button class="rules-tpl-chip {{ selectedRuleTemplate === 'competitive' ? 'active' : '' }}" bindtap="selectRuleTemplate" data-template="competitive">竞技</button>
+        </view>
+      </view>
+      <view class="rules-items">
+        <block wx:for="{{ rules }}" wx:key="index">
+          <view class="rule-item">
+            <view class="rule-item-check {{ item.checked ? 'checked' : '' }}" bindtap="toggleRule" data-index="{{ index }}">{{ item.checked ? '✓' : '' }}</view>
+            <view class="rule-item-body">
+              <text class="rule-item-cat">{{ item.category }}</text>
+              <text class="rule-item-text">{{ item.text }}</text>
+            </view>
+            <text class="rule-item-del" bindtap="deleteRule" data-index="{{ index }}">×</text>
+          </view>
+        </block>
+      </view>
+      <view class="rules-add-row">
+        <input placeholder="添加自定义规则" class="rules-custom-input" bindinput="onCustomRuleInput" value="{{ customRule }}" />
+        <button class="rules-add-btn" bindtap="addCustomRule">添加</button>
+      </view>
+      <view class="rules-preview-bar" bindtap="toggleRulePreview">
+        <text>预览规则</text>
+        <text class="chevron">{{ showRulePreview ? '▲' : '▼' }}</text>
+      </view>
+      <view class="rules-preview-content" wx:if="{{ showRulePreview }}">
+        <text>{{ rulePreview }}</text>
+      </view>
+    </view>
+
+    <!-- 提交按钮区域 -->
+    <view style="height: 100px;"></view>
+  </scroll-view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-area">
+    <button class="submit-btn" bindtap="submitActivity" disabled="{{ !isFormValid }}">发布活动</button>
+  </view>
+</view>

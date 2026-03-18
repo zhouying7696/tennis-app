@@ -1,0 +1,355 @@
+/* profile.wxss */
+.container {
+  position: relative;
+  min-height: 100vh;
+  background: #f4f6f8;
+}
+
+/* 状态栏 */
+.status-bar {
+  height: 44px;
+  background: transparent;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.status-time {
+  font-size: 15px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.status-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.status-icons span {
+  font-size: 12px;
+}
+
+/* 头部英雄区 */
+.profile-hero {
+  background: linear-gradient(160deg, #1a3a6b, #2d5ea0);
+  padding: 60px 20px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-hero::before {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+
+.profile-top {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+}
+
+.profile-avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f5a623, #f76b1c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 800;
+  color: white;
+  border: 3px solid rgba(255,255,255,0.3);
+}
+
+.edit-avatar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.profile-id {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  display: block;
+}
+
+.profile-level-badge {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  font-size: 12px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+/* 评分星星 */
+.profile-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stars {
+  color: #ffd700;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.rating-num {
+  color: rgba(255,255,255,0.9);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rating-count {
+  color: rgba(255,255,255,0.5);
+  font-size: 11px;
+}
+
+/* 统计数据卡片 */
+.profile-stats {
+  display: flex;
+  background: white;
+  margin: 0 16px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-top: -20px;
+  position: relative;
+  z-index: 5;
+}
+
+.pstat {
+  flex: 1;
+  padding: 16px 8px;
+  text-align: center;
+  border-right: 1px solid #f0f0f0;
+}
+
+.pstat:last-child {
+  border-right: none;
+}
+
+.pstat-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+  display: block;
+}
+
+.pstat-label {
+  font-size: 11px;
+  color: #999;
+  margin-top: 3px;
+  display: block;
+}
+
+/* XP进度条 */
+.xp-card {
+  background: white;
+  border-radius: 18px;
+  padding: 16px;
+  margin: 14px 16px 0;
+}
+
+.xp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.xp-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.xp-level {
+  font-size: 13px;
+  color: #1a6b3c;
+  font-weight: 600;
+}
+
+.xp-bar-bg {
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1a6b3c, #5dba7e);
+  border-radius: 4px;
+  width: 68%;
+}
+
+.xp-sub {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #999;
+}
+
+/* 滚动内容区域 */
+.profile-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px;
+}
+
+.profile-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 菜单区域 */
+.menu-section {
+  background: white;
+  border-radius: 18px;
+  margin: 14px 16px 0;
+  overflow: hidden;
+  padding: 4px 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f7f7f7;
+  transition: background 0.1s;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background: #fafafa;
+}
+
+.menu-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.menu-item-text {
+  flex: 1;
+}
+
+.menu-item-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  display: block;
+}
+
+.menu-item-sub {
+  font-size: 11px;
+  color: #999;
+  margin-top: 2px;
+  display: block;
+}
+
+.menu-item-arrow {
+  color: #ccc;
+  font-size: 12px;
+}
+
+/* 最近活动 */
+.recent-activities {
+  background: white;
+  border-radius: 18px;
+  margin: 14px 16px 0;
+  overflow: hidden;
+  padding: 16px;
+}
+
+.ra-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.ra-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f7f7f7;
+}
+
+.ra-item:last-child {
+  border-bottom: none;
+}
+
+.ra-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ra-text {
+  flex: 1;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.4;
+}
+
+.ra-time {
+  font-size: 11px;
+  color: #bbb;
+}

@@ -1,0 +1,125 @@
+<!-- detail.wxml -->
+<view class="container">
+  <!-- 状态栏 -->
+  <view class="status-bar">
+    <text class="status-time">{{ currentTime }}</text>
+    <view class="status-icons">
+      <text>📶</text>
+      <text>🔋</text>
+    </view>
+  </view>
+
+  <!-- 头部英雄区 -->
+  <view class="detail-hero">
+    <button class="detail-back" bindtap="goBack">
+      <text>←</text>
+    </button>
+    <view class="detail-badge">
+      <text>🎾</text>
+      <text>{{ activity.type }}</text>
+    </view>
+    <text class="detail-title">{{ activity.title }}</text>
+    <text class="detail-host">由 {{ activity.hostName }} 发起</text>
+  </view>
+
+  <!-- 滚动内容区域 -->
+  <scroll-view class="detail-scroll" scroll-y>
+    <!-- 活动信息卡片 -->
+    <view class="detail-card">
+      <text class="detail-card-title">活动信息</text>
+      <view class="detail-info-grid">
+        <view class="detail-info-item">
+          <text class="dii-label">日期</text>
+          <text class="dii-value">{{ activity.date }}</text>
+        </view>
+        <view class="detail-info-item">
+          <text class="dii-label">时间</text>
+          <text class="dii-value">{{ activity.startTime }} - {{ activity.endTime }}</text>
+        </view>
+        <view class="detail-info-item">
+          <text class="dii-label">场地</text>
+          <text class="dii-value">{{ activity.venueName }}</text>
+        </view>
+        <view class="detail-info-item">
+          <text class="dii-label">场地类型</text>
+          <text class="dii-value">{{ activity.courtType }}</text>
+        </view>
+        <view class="detail-info-item">
+          <text class="dii-label">水平要求</text>
+          <text class="dii-value">{{ activity.level }}</text>
+        </view>
+        <view class="detail-info-item">
+          <text class="dii-label">参与人数</text>
+          <text class="dii-value">{{ activity.currentPlayers }}/{{ activity.maxPlayers }}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 参与人员卡片 -->
+    <view class="detail-card">
+      <text class="detail-card-title">参与人员</text>
+      <view class="players-list">
+        <block wx:for="{{ participants }}" wx:key="index">
+          <view class="player-item">
+            <view class="player-ava-lg {{ participantAvatars[index] }}">{{ item.name.charAt(0) }}</view>
+            <view class="player-info">
+              <text class="player-name">{{ item.name }}</text>
+              <text class="player-meta">{{ item.level }}</text>
+            </view>
+            <view class="player-level level-{{ item.levelClass }}">{{ item.level }}</view>
+          </view>
+        </block>
+        <block wx:for="{{ emptySlots }}" wx:key="index">
+          <view class="empty-slot" bindtap="joinActivity">
+            <view class="empty-ava">+</view>
+            <text class="empty-text">等待加入</text>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 场地信息卡片 -->
+    <view class="detail-card">
+      <text class="detail-card-title">场地信息</text>
+      <view class="map-placeholder">
+        <text class="map-icon">📍</text>
+        <text class="map-text">{{ activity.venueName }}</text>
+        <text class="map-sub">{{ activity.venueAddress }}</text>
+      </view>
+      <view class="court-tag">
+        <text>🏟️</text>
+        <text>{{ activity.courtType }}</text>
+      </view>
+    </view>
+
+    <!-- 活动描述卡片 -->
+    <view class="detail-card">
+      <text class="detail-card-title">活动描述</text>
+      <text class="detail-description">{{ activity.description }}</text>
+    </view>
+
+    <!-- 活动规则卡片 -->
+    <view class="detail-card">
+      <text class="detail-card-title">活动规则</text>
+      <text class="detail-rules">{{ activity.rules }}</text>
+    </view>
+
+    <!-- 底部空间 -->
+    <view style="height: 100px;"></view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="detail-action">
+    <button class="share-btn" bindtap="shareActivity">
+      <text>📤</text>
+    </button>
+    <button class="join-main-btn" bindtap="joinActivity" disabled="{{ activity.isFull }}">
+      <text wx:if="{{ !activity.isFull }}">立即加入</text>
+      <text wx:else>已满员</text>
+    </button>
+    <view class="price-tag" wx:if="{{ activity.fee > 0 }}">
+      <text>¥{{ activity.fee }}</text>
+      <text class="price-per">/人</text>
+    </view>
+  </view>
+</view>

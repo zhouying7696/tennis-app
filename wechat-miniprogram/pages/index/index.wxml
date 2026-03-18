@@ -1,0 +1,108 @@
+<!-- index.wxml -->
+<view class="container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <text class="status-time">{{ currentTime }}</text>
+    <view class="status-icons">
+      <text>📶</text>
+      <text>🔋</text>
+    </view>
+  </view>
+
+  <!-- 头部区域 -->
+  <view class="home-header">
+    <text class="home-greeting">你好，{{ userInfo.nickname || '网球爱好者' }}</text>
+    <text class="home-name">欢迎来到 TENFUN</text>
+    <view class="home-stats">
+      <view class="stat-pill">
+        <view class="dot"></view>
+        <text>今日活动 28</text>
+      </view>
+      <view class="stat-pill">
+        <text>附近球友 156</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <text class="icon">🔍</text>
+    <input placeholder="搜索活动、球友、场地" class="search-input" bindinput="onSearchInput" />
+    <button class="filter-btn" bindtap="goToFilter">筛选</button>
+  </view>
+
+  <!-- 快速操作 -->
+  <view class="section-header">
+    <text class="section-title">快速操作</text>
+    <text class="section-more" bindtap="viewAllActivities">查看全部</text>
+  </view>
+  <view class="quick-actions">
+    <button class="quick-action" bindtap="goToCreate">
+      <view class="qa-icon green">+</view>
+      <text class="qa-label">创建活动</text>
+    </button>
+    <button class="quick-action" bindtap="goToTournament">
+      <view class="qa-icon orange">🏆</view>
+      <text class="qa-label">赛事</text>
+    </button>
+    <button class="quick-action" bindtap="goToVenues">
+      <view class="qa-icon blue">📍</view>
+      <text class="qa-label">场地</text>
+    </button>
+    <button class="quick-action" bindtap="goToProfile">
+      <view class="qa-icon purple">👤</view>
+      <text class="qa-label">我的</text>
+    </button>
+  </view>
+
+  <!-- 活动列表 -->
+  <view class="section-header">
+    <text class="section-title">推荐活动</text>
+    <text class="section-more" bindtap="refreshActivities">刷新</text>
+  </view>
+  <view class="activities-scroll">
+    <block wx:for="{{ activities }}" wx:key="id">
+      <view class="activity-card" bindtap="goToDetail" data-id="{{ item.id }}">
+        <view class="card-top" style="background: {{ item.type === 'competitive' ? 'linear-gradient(135deg, #e8621a, #f5894e)' : item.type === 'casual' ? 'linear-gradient(135deg, #1a4eb8, #4070e0)' : 'linear-gradient(135deg, #1a6b3c, #2d9e5f)' }}">
+          <view>
+            <text class="card-title">{{ item.title }}</text>
+            <text class="card-subtitle">{{ item.host.nickname }} · {{ item.type === 'competitive' ? '竞技' : item.type === 'casual' ? '休闲' : '训练' }}</text>
+          </view>
+          <view class="card-badge">{{ item.status === 'active' ? '进行中' : '已结束' }}</view>
+        </view>
+        <view class="card-body">
+          <view class="card-info">
+            <view class="info-item">
+              <text class="icon">📅</text>
+              <text>{{ item.date }}</text>
+            </view>
+            <view class="info-item">
+              <text class="icon">🕒</text>
+              <text>{{ item.start_time }} - {{ item.end_time }}</text>
+            </view>
+            <view class="info-item">
+              <text class="icon">📍</text>
+              <text>{{ item.venue.name }}</text>
+            </view>
+          </view>
+          <view class="card-footer">
+            <view class="players-row">
+              <block wx:for="{{ item.participants || [] }}" wx:key="index" wx:if="{{ index < 3 }}">
+                <view class="player-avatar" style="background: {{ index === 0 ? '#1a6b3c' : index === 1 ? '#e8621a' : '#1a4eb8' }}">{{ item.user.nickname.charAt(0) }}</view>
+              </block>
+              <view class="player-avatar pa-gray" wx:if="{{ (item.max_players - (item.participants || []).length) > 0 }}">+{{ item.max_players - (item.participants || []).length }}</view>
+            </view>
+            <button class="join-btn" bindtap="joinActivity" data-id="{{ item.id }}" catchtap="preventBubbling">{{ item.status === 'active' ? '报名' : '已结束' }}</button>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view class="loading" wx:if="{{ loading }}">
+      <text>加载中...</text>
+    </view>
+    <view class="empty" wx:if="{{ !loading && activities.length === 0 }}">
+      <text class="empty-icon">🎾</text>
+      <text class="empty-text">暂无活动，快来创建一个吧！</text>
+    </view>
+  </view>
+</view>
